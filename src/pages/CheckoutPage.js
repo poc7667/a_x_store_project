@@ -4,121 +4,10 @@ import CartContent from "../components/CartContent";
 import useCartSubtotal from "../hooks/useCartSubtotal";
 import { Link, useHistory } from "react-router-dom";
 import { Constants } from "../Constants";
+import Action from "../constants/Action";
 
-const PaymentSection = ({setPaymentInfo}) => {
-    const [paymentDetail, setPaymentDetail] = useState({type: 'ach', payload: {}});
-    const payloadChange = (fieldName, event)=>{
-        const newPayload = {...paymentDetail.payload, [fieldName]: event.target.value}
-        updatePaymentDetail({...paymentDetail, payload: newPayload})
-    }
-    const setPaymentType = (paymentType) => {
-        updatePaymentDetail({...paymentDetail, type:paymentType})
-    }
-    const updatePaymentDetail = (newPayload) =>{
-        setPaymentDetail(newPayload)
-        setPaymentInfo(newPayload)
-    }
-    return (
-        <>
-            <div className="col-12">
-                <div className="mb-3">
-                    <label className="form-label">Payment method {JSON.stringify(paymentDetail)}<span
-                        className="text-danger">*</span></label>
-                    <div className="custom-control custom-radio custom-control-inline">
-                        <div className="form-check mb-0">
-                            <input className="form-check-input"
-                                   checked={'credit_card'===paymentDetail.type}
-                                   type="radio"
-                                   onChange={() => {
-                                setPaymentType('credit_card')
-                            }} name="flexRadioDefault" id="flexRadioDefault1"/>
-                            <label className="form-check-label" htmlFor="flexRadioDefault1">Credit card</label>
-                        </div>
-                    </div>
-                    <div className="custom-control custom-radio custom-control-inline">
-                        <div className="form-check mb-0">
-                            <input className="form-check-input" type="radio"
-                                   checked={'ach'===paymentDetail.type}
-                                   onChange={() => {
-                                setPaymentType('ach')
-                            }} name="flexRadioDefault" id="flexRadioDefault2"/>
-                            <label className="form-check-label" htmlFor="flexRadioDefault2">ACH</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {paymentDetail.type === "ach" && (
-                <>
-                    <div className="col-12">
-                        <div className="mb-3">
-                            <label className="form-label">Account number<span
-                                className="text-danger">*</span></label>
-                            <input name="name" id="account_number"
-                                   value={paymentDetail.payload?.account_number}
-                                   onChange={(e)=>payloadChange('account_number', e)}
-                                   type="text" className="form-control"
-                                   placeholder="Account number"/>
-                        </div>
-                    </div>
-                    <div className="col-12">
-                        <div className="mb-3">
-                            <label className="form-label">Routing number<span
-                                className="text-danger">*</span></label>
-                            <input name="name" id="routing_number"
-                                   value={paymentDetail.payload?.routing_number}
-                                   onChange={(e)=>payloadChange('routing_number', e)}
-                                   type="text" className="form-control"
-                                   placeholder="Routing number"/>
-                        </div>
-                    </div>
-                </>
-            )
-            }
-            {paymentDetail.type === "credit_card" && (
-                <>
-                    <div className="col-12">
-                        <div className="mb-3">
-                            <label className="form-label">Card number<span
-                                className="text-danger">*</span></label>
-                            <input name="name" id="card_number"
-                                   value={paymentDetail.payload?.card_number}
-                                   onChange={(e)=>payloadChange('card_number', e)}
-                                   type="text" className="form-control"
-                                   placeholder="Card number"/>
-                        </div>
-                    </div>
-                    <div className="col-12">
-                        <div className="mb-3">
-                            <label className="form-label">Exp date(mmYY)<span
-                                className="text-danger">*</span></label>
-                            <input name="name" id="exp_date"
-                                   value={paymentDetail.payload?.exp_date}
-                                   maxLength={4}
-                                   onChange={(e)=>payloadChange('exp_date', e)}
-                                   type="text" className="form-control"
-                                   placeholder="Exp date"/>
-                        </div>
-                    </div>
-                    <div className="col-12">
-                        <div className="mb-3">
-                            <label className="form-label">Security code<span
-                                className="text-danger">*</span></label>
-                            <input name="name" id="security_code"
-                                   value={paymentDetail.payload?.security_code}
-                                   maxLength={3}
-                                   onChange={(e)=>payloadChange('security_code', e)}
-                                   type="text" className="form-control"
-                                   placeholder="Security code"/>
-                        </div>
-                    </div>
-                </>
-            )
-            }
-        </>
-    )
-}
 const CheckoutPage = () => {
-    const {storeState: {shippingCost, cart, user}} = useContext(StoreContext);
+    const {storeState: {shippingCost, cart, user},  dispatch} = useContext(StoreContext);
     const [subtotal, setSubtotal] = useCartSubtotal();
     const [cartItems, setCartItems] = useState(null);
     const [paymentInfo, setPaymentInfo] = useState({
@@ -139,7 +28,7 @@ const CheckoutPage = () => {
     });
 
     const updateContactHandler = (fieldName, event) => {
-        setContact({...contact, fieldName: event.target.value})
+        setContact({...contact, [fieldName]: event.target.value})
     }
     const history = useHistory();
 
@@ -154,6 +43,7 @@ const CheckoutPage = () => {
         return (<></>);
     }
     const submitOrderHandler = async () => {
+
         /**
          * 1. clear cart.
          * 2. submit order
@@ -172,12 +62,13 @@ const CheckoutPage = () => {
             },
             body: JSON.stringify({
                 user,
-                items: cartItems,
+                line_items: cartItems,
                 contact,
-                paymentInfo
+                payment_info:paymentInfo
             }) // body data type must match "Content-Type" header
         }
-        const response = await fetch(Constants.SERVER_URL + '/orders', postData);
+        const response = await fetch(Constants.SERVER_URL + '/orders/', postData);
+        dispatch({type: Action.clearCart, payload: null});
         history.push('/orders/1');
     }
 
@@ -188,7 +79,7 @@ const CheckoutPage = () => {
                     <div className="row">
                         <div className="col-lg-7 col-md-6">
                             <div className="rounded shadow-lg p-4">
-                                <h5 className="mb-0">Billing Details : {JSON.stringify(contact)}</h5>
+                                <h5 className="mb-0">Billing Details</h5>
                                 <form className="mt-4">
                                     <div className="row">
                                         <div className="col-12">
@@ -329,7 +220,7 @@ const CheckoutPage = () => {
                                         </tr>
                                         <tr>
                                             <td className="h6">Shipping Charge</td>
-                                            <td className="text-end fw-bold">$ {shippingCost}</td>
+                                            <td className="text-end fw-bold">$ {shippingCost.toFixed(2) }</td>
                                         </tr>
                                         <tr className="bg-light">
                                             <td className="h5 fw-bold">Total</td>
@@ -353,6 +244,130 @@ const CheckoutPage = () => {
                 </div>
                 {/*end container*/}
             </section>
+        </>
+    )
+}
+
+const PaymentSection = ({setPaymentInfo}) => {
+    const [paymentDetail, setPaymentDetail] = useState({type: 'ach', payload: {
+            exp_date: '01/06',
+            card_number: '6011 6011 6011 6611',
+            security_code: '356',
+            routing_number: '121122676',
+            account_number: '101200453'
+        }});
+    const payloadChange = (fieldName, event)=>{
+        const newPayload = {...paymentDetail.payload, [fieldName]: event.target.value}
+        updatePaymentDetail({...paymentDetail, payload: newPayload})
+    }
+    const setPaymentType = (paymentType) => {
+        updatePaymentDetail({...paymentDetail, type:paymentType})
+    }
+    const updatePaymentDetail = (newPayload) =>{
+        setPaymentDetail(newPayload)
+        setPaymentInfo(newPayload)
+    }
+    // init update.
+    useEffect(() => {
+        updatePaymentDetail(paymentDetail);
+    },[])
+
+    return (
+        <>
+            <div className="col-12">
+                <div className="mb-3">
+                    <label className="form-label">Payment method<span
+                        className="text-danger">*</span></label>
+                    <div className="custom-control custom-radio custom-control-inline">
+                        <div className="form-check mb-0">
+                            <input className="form-check-input"
+                                   checked={'credit_card'===paymentDetail.type}
+                                   type="radio"
+                                   onChange={() => {
+                                       setPaymentType('credit_card')
+                                   }} name="flexRadioDefault" id="flexRadioDefault1"/>
+                            <label className="form-check-label" htmlFor="flexRadioDefault1">Credit card</label>
+                        </div>
+                    </div>
+                    <div className="custom-control custom-radio custom-control-inline">
+                        <div className="form-check mb-0">
+                            <input className="form-check-input" type="radio"
+                                   checked={'ach'===paymentDetail.type}
+                                   onChange={() => {
+                                       setPaymentType('ach')
+                                   }} name="flexRadioDefault" id="flexRadioDefault2"/>
+                            <label className="form-check-label" htmlFor="flexRadioDefault2">ACH</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {paymentDetail.type === "ach" && (
+                <>
+                    <div className="col-12">
+                        <div className="mb-3">
+                            <label className="form-label">Account number<span
+                                className="text-danger">*</span></label>
+                            <input name="name" id="account_number"
+                                   value={paymentDetail.payload?.account_number}
+                                   onChange={(e)=>payloadChange('account_number', e)}
+                                   type="text" className="form-control"
+                                   placeholder="Account number"/>
+                        </div>
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-3">
+                            <label className="form-label">Routing number<span
+                                className="text-danger">*</span></label>
+                            <input name="name" id="routing_number"
+                                   value={paymentDetail.payload?.routing_number}
+                                   onChange={(e)=>payloadChange('routing_number', e)}
+                                   type="text" className="form-control"
+                                   placeholder="Routing number"/>
+                        </div>
+                    </div>
+                </>
+            )
+            }
+            {paymentDetail.type === "credit_card" && (
+                <>
+                    <div className="col-12">
+                        <div className="mb-3">
+                            <label className="form-label">Card number<span
+                                className="text-danger">*</span></label>
+                            <input name="name" id="card_number"
+                                   value={paymentDetail.payload?.card_number}
+                                   onChange={(e)=>payloadChange('card_number', e)}
+                                   type="text" className="form-control"
+                                   placeholder="Card number"/>
+                        </div>
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-3">
+                            <label className="form-label">Exp date(mmYY)<span
+                                className="text-danger">*</span></label>
+                            <input name="name" id="exp_date"
+                                   value={paymentDetail.payload?.exp_date}
+                                   maxLength={4}
+                                   onChange={(e)=>payloadChange('exp_date', e)}
+                                   type="text" className="form-control"
+                                   placeholder="Exp date"/>
+                        </div>
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-3">
+                            <label className="form-label">Security code<span
+                                className="text-danger">*</span></label>
+                            <input name="name" id="security_code"
+                                   value={paymentDetail.payload?.security_code}
+                                   maxLength={3}
+                                   onChange={(e)=>payloadChange('security_code', e)}
+                                   type="text" className="form-control"
+                                   placeholder="Security code"/>
+                        </div>
+                    </div>
+                </>
+            )
+            }
         </>
     )
 }

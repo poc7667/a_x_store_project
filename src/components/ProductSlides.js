@@ -3,12 +3,13 @@ import { StoreContext } from "../store/storeReducer";
 
 const ProductSlides = (props) => {
     const {storeState: {activeSkuId}} = useContext(StoreContext);
-    const {activeProduct, skus} = props
+    const {skus} = props
     const [currentIndex, setCurrentIndex] = useState(0)
-    const skuIDs = skus?.map(item => item.id) || []
+    const skuIds = skus?.map(item => item.id) || []
+
     useEffect(() => {
         if (activeSkuId) {
-            setCurrentIndex(skuIDs.indexOf(activeSkuId))
+            setCurrentIndex(skuIds.indexOf(activeSkuId))
         }
     }, [activeSkuId])
 

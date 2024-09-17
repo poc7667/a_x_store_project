@@ -1,47 +1,35 @@
 import { createContext } from "react";
 import Action from "../constants/Action";
-import update from 'immutability-helper';
 
 export function storeReducer(state, action) {
-    // Copy items, don't update on existing items.
-    let products = Object.assign({}, state.products);
-    let skus = Object.assign({}, state.skus);
-    let reviews = Object.assign({}, state.reviews);
+    let reviews = Object.assign({}, state.reviews)
     switch (action.type) {
         case Action.loadProducts:
-            products = action.payload.reduce((products, product) => {
-                product.hasSkus = false;
-                products[product.id] = product;
-                return products;
-            }, products);
-            return Object.assign({}, state, {products: products, isLoading: false});
+            return Object.assign({}, state, {products: action.payload}, {isLoading: false});
         case Action.loadProduct:
-            const activeProduct = state.products[action.payload] || {}
+            const activeProduct = state.products.filter(product => product.id === action.payload)[0] || {}
             return Object.assign({}, state, {activeProduct});
         case Action.loadSkus:
-            action.payload.forEach(skuItem => {
-                const {
-                    id,
-                    product: productId,
-                    size,
-                    color,
-                    style
-                } = skuItem;
-                // Normalize
-                skuItem.productId = productId
+            const newSkus = {...state.skus};
+
+            action.payload.forEach(skuItem =>{
+                const {product_id} = skuItem;
                 /**
                  * Add dummy title
                  */
-                if (!skus[productId]) {
-                    skus[productId] = []
+                if (!newSkus[product_id]){
+                    newSkus[product_id] = []
                 }
-                skuItem.title = [color, size, style].filter(i => i?.length).join("/ ") || ''
-                skus[productId].push({...skuItem});
-                if (products[productId]) {
-                    products[productId].hasSkus = true;
-                }
+                const {
+                    size,
+                    color,
+                    style,
+                } = skuItem;
+                const title = [color, size, style].filter(i => i?.length).join("/ ") || ''
+                skuItem.title = title
+                newSkus[product_id].push(skuItem);
             })
-            return Object.assign({}, state, {skus: skus, products: products});
+            return Object.assign({}, state, {skus: newSkus});
         case Action.selectSku:
             return Object.assign({}, state, action.payload);
         case Action.clearActiveSku:
@@ -49,54 +37,67 @@ export function storeReducer(state, action) {
         case Action.addItemToCart:
             // Didn't handle the stock in sku.
             let cart = Object.assign({}, state.cart)
+            let skus =  Object.assign({}, state.skus)
             const {sku, quantity} = action.payload;
-            console.log(sku)
-            const product = state.products[sku.productId];
+            const product = state.products.filter(item=> item.id === sku.product_id)[0];
             if (!cart[sku.id]) {
                 cart[sku.id] = {
-                    name: product?.name || 'No name',
+                    name: product?.productName|| 'No name',
                     sku: {...sku},
                     quantity: quantity
                 }
             } else {
                 cart[sku.id].quantity += quantity;
+
             }
             // Offset stock
-            let selectedSku;
-            try {
-                selectedSku = skus[sku.productId].filter(item => item.id === sku.id)[0];
-            } catch (e) {
-                debugger
-            }
-            selectedSku.stock -= quantity;
+            skus[sku.product_id].filter(item=> item.id === sku.id)[0].stock -= quantity;
             if (cart[sku.id].quantity === 0) {
                 cart[sku.id] = undefined;
             }
-            console.log(skus);
             return Object.assign({}, state, {cart, skus});
+        case Action.login:
+            localStorage.setItem('userEmail', action.payload.email);
+            const customer = Object.values(state.customers).filter(user => user.email === action.payload.email)?.[0]
+            return Object.assign({}, state, {user: customer});
+        case Action.logout:
+            localStorage.setItem('userEmail', '');
+            return Object.assign({}, state, {user: {}});
         case Action.loadReviews:
-            action.payload.map(review => {
+            action.payload.map(review=>{
+                const {
+                    nickname,
+                    product_id,
+                    customer_id
+                } = review
+                const {firstName, lastName} = state.customers[customer_id]
+                review.title = nickname || `${firstName} ${lastName}`;
                 // load sku description for each review
-                review.productId = review.product;
-                review.skuId = review.sku;
-                // remember to delete un-needed props.
-                // review.product = undefined;
-                // review.sku = undefined;
-                if (!reviews[review.productId]) {
-                    reviews[review.productId] = []
-                }
-                reviews[review.productId].push(review);
+              if (!reviews[product_id]){
+                  reviews[product_id] = [];
+              }
+              reviews[product_id].push({...review});
             })
             return Object.assign({}, state, {reviews});
         case Action.addReview:
             let newReviews = action.payload;
-            newReviews.title = state.skus[newReviews.productId].filter(sku => sku.id === newReviews.skuID)[0].title;
-            reviews[action.payload.productId].push(newReviews);
+            const {
+                nickname,
+                customer_id
+            } = newReviews
+            const {firstName, lastName} = state.customers[customer_id]
+            newReviews.title = nickname || `${firstName} ${lastName}`;
+            reviews[action.payload.product_id].push(newReviews);
             return Object.assign({}, state, {reviews});
         case Action.loadCustomers:
-            return Object.assign({}, state, {user:action.payload?.[0]});
-        case Action.logout:
-            return Object.assign({}, state, {user:{}});
+            console.log(action.payload);
+            return Object.assign({}, state, {customers: action.payload.reduce((data, customer)=>{
+                data[customer.id] = customer;
+                return data;
+            },{})});
+
+        case Action.clearCart:
+            return Object.assign({}, state, {cart:{}});
         default:
             return Object.assign({}, state);
     }

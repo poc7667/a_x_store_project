@@ -3,7 +3,7 @@ import { useState } from "react";
 const useInput = initValue => {
     const [inputValue, setInputValue] = useState(initValue||'')
     const setInputValueHandler = (e) => {
-        setInputValue(e?.target?.value|| e);
+        setInputValue(e?.target?.value|| '');
     }
     return [inputValue, setInputValueHandler]
 };

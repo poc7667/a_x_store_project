@@ -26,7 +26,7 @@ const Cart = (props) => {
             <CartContent cartItems={cartItems}></CartContent>
             <div className="d-flex align-items-center justify-content-between pt-4 border-top">
                 <h6 className="text-dark mb-0">Total($):</h6>
-                <h6 className="text-dark mb-0">${ subtotal }</h6>
+                <h6 className="text-dark mb-0">${ subtotal.toFixed(2) }</h6>
             </div>
             <div className="mt-3 text-center">
                 <Link to={`/checkout`} onClick={()=>{setExpandCartHandler(false)}}  className="btn btn-primary">Checkout</Link>

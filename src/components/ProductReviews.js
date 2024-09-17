@@ -2,7 +2,9 @@ import { useContext, useEffect, useReducer, useState } from "react";
 import useInput from "../hooks/useInput";
 import Action from "../constants/Action";
 import { StoreContext, storeReducer } from "../store/storeReducer";
-import { v4 as uuidv4 } from 'uuid';
+import { Constants } from "../Constants";
+import { utils } from "../utils";
+
 const ProductReviews = (props) => {
     const {dispatch} = useContext(StoreContext);
     const {productReviews, selectedSku} = props;
@@ -20,19 +22,31 @@ const ProductReviews = (props) => {
         }
     }, [reviewScore])
 
-    const submitReviewHandler = () => {
-        console.log([name, email, reviewComment])
-        dispatch({
-            type: Action.addReview, payload: {
-                productId: selectedSku.productId,
-                skuID: selectedSku.id,
-                score: reviewScore+1,
-                comment: reviewComment,
-                email,
-                name
 
-            }
+
+    const submitReviewHandler =  () => {
+        // product = models.ForeignKey(Product, on_delete=models.CASCADE)
+        // sku = models.ForeignKey(Sku, on_delete=models.CASCADE)
+        // score = models.IntegerField()
+        // comment = models.TextField()
+        // customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+
+
+        utils.postRequest({
+            customer_id: '1',
+            nickname: name,
+            product_id: selectedSku.product_id.toString(),
+            sku_id: selectedSku.id.toString(),
+            score: reviewScore+1,
+            comment: reviewComment,
+        }, `/reviews/`).then(response=> {
+            console.log(response);
+            dispatch({
+                type: Action.addReview, payload: response
+            })
         })
+
+
         // Clear review
         setReviewScore(-1);
         setReviewComment('');
@@ -52,9 +66,10 @@ const ProductReviews = (props) => {
                                     <ul className="media-list list-unstyled mb-0">
                                         {productReviews.map(review => {
                                             return (
-                                                <li  key={`review-star-li-${review.id}-${uuidv4()}`}>
+                                                <li>
                                                     <div className="d-flex justify-content-between">
                                                         <div className="d-flex align-items-center">
+
                                                             <div className="flex-1 commentor-detail">
                                                                 {review?.title &&
                                                                 <small
@@ -66,7 +81,8 @@ const ProductReviews = (props) => {
                                                         <ul className="list-unstyled mb-0">
                                                             {[...Array(review.score)].map((_, index) => {
                                                                 return (
-                                                                    <li className="list-inline-item" key={uuidv4()}><i
+                                                                    <li className="list-inline-item"
+                                                                        key={`star-${index}`}><i
                                                                         className="mdi mdi-star text-warning"/></li>
                                                                 )
                                                             })}
@@ -93,7 +109,7 @@ const ProductReviews = (props) => {
                                                 <h6 className="small fw-bold">Your Rating:</h6>
                                                 {[...Array(5)].map((_, numOfStars) => {
                                                     return (
-                                                        <a key={uuidv4()} onClick={(e) => {
+                                                        <a href={``} onClick={(e) => {
                                                             setReviewScore(numOfStars)
                                                             e.preventDefault()
                                                         }}
@@ -101,11 +117,11 @@ const ProductReviews = (props) => {
                                                             <ul className="list-unstyled mb-0 small">
                                                                 {[...Array(5)].map((_, index) => {
                                                                     if (index <= numOfStars) {
-                                                                        return <li className="list-inline-item" key={uuidv4()}><i
+                                                                        return <li className="list-inline-item"><i
                                                                             className="mdi mdi-star text-warning"/>
                                                                         </li>;
                                                                     }
-                                                                    return <li className="list-inline-item" key={uuidv4()}><i
+                                                                    return <li className="list-inline-item"><i
                                                                         className="mdi mdi-star-outline  text-warning"/>
                                                                     </li>;
                                                                 })}
@@ -135,7 +151,7 @@ const ProductReviews = (props) => {
                                                                   value={reviewComment}
                                                                   onChange={(e) => setReviewComment(e)}
                                                                   name="message" className="form-control ps-5" required
-                                                                  />
+                                                                  defaultValue={""}/>
                                                     </div>
                                                 </div>
                                             </div>

@@ -5,8 +5,8 @@ import { StoreContext } from "../store/storeReducer";
 import Action from "../constants/Action";
 
 const Header = () => {
-    const {storeState: {activeSkuId, cart, user}} = useContext(StoreContext);
-    const {storeState, dispatch} = useContext(StoreContext);
+    const {storeState: {cart, user}} = useContext(StoreContext);
+    const {dispatch} = useContext(StoreContext);
     const [expandCart, setExpandCart] = useState(false);
     const [expandAccount, setExpandAccount] = useState(false);
 
@@ -44,6 +44,11 @@ const Header = () => {
                     <img src="/images/ucsc.png" height={24} className="logo-light-mode"/>
                 </Link>
                 <ul className="buy-button list-inline mb-0" ref={headerPopupRef}>
+                    {user.email &&
+                    <li className="list-inline-item mb-0" style={{marginRight: '15px'}}>
+                        Hi {user.firstName} {user.firstName}!
+                    </li>
+                    }
                     <li className="list-inline-item mb-0 pe-1">
                         <div className="dropdown">
                             <button onClick={() => {
@@ -56,6 +61,7 @@ const Header = () => {
                                   cart={cart}></Cart>
                         </div>
                     </li>
+
                     <li className="list-inline-item mb-0">
                         <div className="dropdown dropdown-primary">
                             <button
@@ -74,6 +80,7 @@ const Header = () => {
                                         }} className="dropdown-item text-dark">Order History</Link>
                                         <div className="dropdown-divider my-3 border-top"/>
                                         <Link to={`/products`} onClick={() => {
+                                            setExpandAccount(false);
                                             dispatch({type: Action.logout, payload: null})
                                         }} className="dropdown-item text-dark">
                                             <i

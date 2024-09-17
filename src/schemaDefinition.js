@@ -6,7 +6,7 @@ export const SchemaDefinition =  {
         },
         {
             "title": "Users Id",
-            "value": "customer"
+            "value": "customer_id"
         },
         {
             "title": "Date",
@@ -28,23 +28,53 @@ export const SchemaDefinition =  {
         },
         {
             "title": "order",
-            "value": "order"
+            "value": "order_id"
         },
         {
-            "title": "recipient",
-            "value": "recipient"
+            "title": "employee id",
+            "value": "employee_id"
         },
-        {
-            "title": "recipientPhone",
-            "value": "recipientPhone"
-        },
-        {
-            "title": "shippingAddress",
-            "value": "shippingAddress"
-        },
+        // {
+        //     "title": "recipient",
+        //     "value": "recipient"
+        // },
+        // {
+        //     "title": "recipientPhone",
+        //     "value": "recipientPhone"
+        // },
+        // {
+        //     "title": "shippingAddress",
+        //     "value": "shippingAddress"
+        // },
         {
             "title": "shipDate",
             "value": "shipDate"
+        },
+        {
+            "title": "status",
+            "value": "order_status"
+        }
+    ],
+    'deliveries': [
+        {
+            "title": "id",
+            "value": "id"
+        },
+        // {
+        //     "title": "shipment",
+        //     "value": "shipment_id"
+        // },
+        // {
+        //     "title": "employee id",
+        //     "value": "employee_id"
+        // },
+        {
+            "title": "order id",
+            "value": "order_id"
+        },
+        {
+            "title": "deliveredDate",
+            "value": "deliveredDate"
         }
     ],
     'employees': [
@@ -76,7 +106,7 @@ export const SchemaDefinition =  {
         },
         {
             "title": "order",
-            "value": "order"
+            "value": "order_id"
         },
         {
             "title": "method",

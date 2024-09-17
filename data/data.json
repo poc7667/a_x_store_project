@@ -1,13 +1,13 @@
 {
   "products": [
     {
-      "product": "1",
+      "product_id": "1",
       "productName": "New Apple iPhone 12",
       "description": "\"Ceramic Shield, tougher than any smartphone glass\nA14 Bionic chip, the fastest chip ever in a smartphone\nAdvanced dual-camera system with 12MP Ultra Wide and Wide cameras; Night mode, Deep Fusion, Smart HDR 3, 4K Dolby Vision HDR recording\n12MP TrueDepth front camera with Night mode, 4K Dolby Vision HDR recording\"",
       "skus": [
         {
-          "skuID": "1",
-          "product": 1,
+          "skuId": "1",
+          "product_id": 1,
           "size": "64GB",
           "color": "RED",
           "style": null,
@@ -16,8 +16,8 @@
           "stock": 20
         },
         {
-          "skuID": "10",
-          "product": 1,
+          "skuId": "10",
+          "product_id": 1,
           "size": "64GB",
           "color": "BLACK",
           "style": null,
@@ -26,8 +26,8 @@
           "stock": 10
         },
         {
-          "skuID": "11",
-          "product": 1,
+          "skuId": "11",
+          "product_id": 1,
           "size": "128GB",
           "color": "BLACK",
           "style": null,
@@ -36,8 +36,8 @@
           "stock": 16
         },
         {
-          "skuID": "12",
-          "product": 1,
+          "skuId": "12",
+          "product_id": 1,
           "size": "256GB",
           "color": "BLACK",
           "style": null,
@@ -46,8 +46,8 @@
           "stock": 5
         },
         {
-          "skuID": "2",
-          "product": 1,
+          "skuId": "2",
+          "product_id": 1,
           "size": "128GB",
           "color": "RED",
           "style": null,
@@ -56,8 +56,8 @@
           "stock": 25
         },
         {
-          "skuID": "3",
-          "product": 1,
+          "skuId": "3",
+          "product_id": 1,
           "size": "256GB",
           "color": "RED",
           "style": null,
@@ -66,8 +66,8 @@
           "stock": 36
         },
         {
-          "skuID": "4",
-          "product": 1,
+          "skuId": "4",
+          "product_id": 1,
           "size": "64GB",
           "color": "BLUE",
           "style": null,
@@ -76,8 +76,8 @@
           "stock": 21
         },
         {
-          "skuID": "5",
-          "product": 1,
+          "skuId": "5",
+          "product_id": 1,
           "size": "128GB",
           "color": "BLUE",
           "style": null,
@@ -86,8 +86,8 @@
           "stock": 32
         },
         {
-          "skuID": "6",
-          "product": 1,
+          "skuId": "6",
+          "product_id": 1,
           "size": "256GB",
           "color": "BLUE",
           "style": null,
@@ -96,8 +96,8 @@
           "stock": 31
         },
         {
-          "skuID": "7",
-          "product": 1,
+          "skuId": "7",
+          "product_id": 1,
           "size": "64GB",
           "color": "WHITE",
           "style": null,
@@ -106,8 +106,8 @@
           "stock": 1
         },
         {
-          "skuID": "8",
-          "product": 1,
+          "skuId": "8",
+          "product_id": 1,
           "size": "128GB",
           "color": "WHITE",
           "style": null,
@@ -116,8 +116,8 @@
           "stock": 3
         },
         {
-          "skuID": "9",
-          "product": 1,
+          "skuId": "9",
+          "product_id": 1,
           "size": "256GB",
           "color": "WHITE",
           "style": null,
@@ -128,13 +128,13 @@
       ]
     },
     {
-      "product": "2",
+      "product_id": "2",
       "productName": "Object Oriented Analysis & Design Cookbook: Introduction to Practical System Modeling",
       "description": "Best OOAD book ever",
       "skus": [
         {
-          "skuID": "13",
-          "product": 2,
+          "skuId": "13",
+          "product_id": 2,
           "size": null,
           "color": null,
           "style": null,
@@ -145,13 +145,13 @@
       ]
     },
     {
-      "product": "3",
+      "product_id": "3",
       "productName": "Funko Pop! Marvel: Falcon and The Winter Soldier - Capatain America (Sam Wilson) with Shield, Year of The Shield Amazon Exclusive",
       "description": "\"Funko presents Marvel Year of the Shield, the collectible series exclusively available here. This series is made to celebrate heroes who wield shields to protect the innocent from villains whether they appear in the Marvel comics, movies, or both.\nBring home new figures of a variety of heroes for your Marvel collection by subscribing today! A new figure is released every other month, and the second figure of this 8-part series is Pop! Falcon.\nThis Pop! features Sam Wilson in his red, white, and blue costume, at the ready with his shield.\nSam Wilson has been a longtime partner to Captain America, and did not hesitate to take up his new position as Falcon alongside Captain America and the Avengers. Pop! Falcon Captain America is ready to take up his post in your Marvel collection.\nVinyl figure is approximately 3.75-inches tall and comes in a window display box.\"",
       "skus": [
         {
-          "skuID": "14",
-          "product": 3,
+          "skuId": "14",
+          "product_id": 3,
           "size": null,
           "color": null,
           "style": null,
@@ -162,13 +162,13 @@
       ]
     },
     {
-      "product": "4",
+      "product_id": "4",
       "productName": "Hudson Baby Unisex Baby Plush Animal Face Robe",
       "description": "\"100% Polyester\nImported\nAnimal face plush hooded bath robe\nMade with 100% plush coral fleece fabric\nSoft and gentle on baby's skin\nOptimal for everyday use\nAffordable, high quality bath robe\"",
       "skus": [
         {
-          "skuID": "15",
-          "product": 4,
+          "skuId": "15",
+          "product_id": 4,
           "size": "0-9 Months",
           "color": "Blue Elephat",
           "style": null,
@@ -177,8 +177,8 @@
           "stock": 50
         },
         {
-          "skuID": "16",
-          "product": 4,
+          "skuId": "16",
+          "product_id": 4,
           "size": "0-9 Months",
           "color": "White Chicken",
           "style": null,
@@ -187,8 +187,8 @@
           "stock": 26
         },
         {
-          "skuID": "17",
-          "product": 4,
+          "skuId": "17",
+          "product_id": 4,
           "size": "0-9 Months",
           "color": "Blue Alligator",
           "style": null,
@@ -199,13 +199,13 @@
       ]
     },
     {
-      "product": "5",
+      "product_id": "5",
       "productName": "LS Jumbo Deluxe Folding Shopping Cart with Dual Swivel Wheels and Double Basket- 200 lb Capacity",
       "description": "\"Made of heavy-duty steel; Foldable\nFeatures double front swivel wheels; Oversized wheels\nFeatures 2 baskets; Handle with soft grip\nThick gauge steel on wheel axles\nCapacity of 200 pounds\"",
       "skus": [
         {
-          "skuID": "18",
-          "product": 5,
+          "skuId": "18",
+          "product_id": 5,
           "size": null,
           "color": null,
           "style": null,
@@ -216,13 +216,13 @@
       ]
     },
     {
-      "product": "6",
+      "product_id": "6",
       "productName": "ASUS Laptop L210 Ultra Thin Laptop, 11.6\u201d HD Display, Intel Celeron N4020 Processor, 4GB RAM, 64GB Storage, NumberPad, Windows 10 Home in S Mode with One Year of Microsoft 365 Personal, L210MA-DB01",
       "description": "\"Efficient Intel Celeron N4020 Processor (4M Cache, up to 2.8 GHz)\n11.6\u201d HD (1366 x 768) Slim Display\n64GB eMMC Flash Storage and 4GB DDR4 RAM\nWindows 10 in S Mode with One Year of Microsoft 365 Personal\nSlim and Portable: 0.7\u201d thin and weighs only 2.2 lbs (battery included)\"",
       "skus": [
         {
-          "skuID": "19",
-          "product": 6,
+          "skuId": "19",
+          "product_id": 6,
           "size": null,
           "color": null,
           "style": "Intel i3-1005G1 | 4GB RAM | 128G SSD",
@@ -231,8 +231,8 @@
           "stock": 35
         },
         {
-          "skuID": "20",
-          "product": 6,
+          "skuId": "20",
+          "product_id": 6,
           "size": null,
           "color": null,
           "style": "Intel i3-1005G1 | 8GB RAM | 128G SSD",
@@ -241,8 +241,8 @@
           "stock": 36
         },
         {
-          "skuID": "21",
-          "product": 6,
+          "skuId": "21",
+          "product_id": 6,
           "size": null,
           "color": null,
           "style": "Intel i7-1165G7 | 8GB RAM | 512GB SSD",

@@ -2,17 +2,14 @@ import PropTypes from 'prop-types';
 
 
 const ProductPropType = {
-    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    minPrice: PropTypes.number.isRequired,
-    image: PropTypes.string,
-    hasSkus: PropTypes.bool
+    lowestPrice: PropTypes.number.isRequired
 }
 
 const SkuPropType = {
     id: PropTypes.string.isRequired,
-    productId: PropTypes.string.isRequired,
+    product_id: PropTypes.string.isRequired,
     size: PropTypes.string,
     color: PropTypes.string,
     style: PropTypes.string,
@@ -21,9 +18,17 @@ const SkuPropType = {
     stock: PropTypes.number.isRequired
 }
 
+const CustomerPropType = {
+    id: PropTypes.string.isRequired,
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string,
+    email: PropTypes.string,
+}
+
+
 const ReviewPropType = {
     id: PropTypes.string,
-    productId: PropTypes.string,
+    product_id: PropTypes.string,
     skuId: PropTypes.string,
     userId: PropTypes.string,
     score: PropTypes.number,
@@ -31,25 +36,20 @@ const ReviewPropType = {
 }
 
 const CartPropType = {
-    product: PropTypes.string,
+    product_id: PropTypes.string,
     sku: PropTypes.string.isRequired,
     quantity: PropTypes.number.isRequired
 };
 
-const CustomerPropType = {
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    phone: PropTypes.string,
-    email: PropTypes.string,
-};
 
 export const initialStoreState = {
     isLoading: true,
     user: {},
     activeProduct: {},
     activeSkuId: null,
-    products: {},
+    products: [],
     skus:{},
+    customers: {},
     reviews: {},
     cart: {},
     shippingCost: 10
@@ -63,9 +63,9 @@ initialStoreState.PropTypes = {
     activeProduct: ProductPropType,
     activeSkuId: PropTypes.string,
     products: PropTypes.arrayOf(ProductPropType),
+    customers: PropTypes.objectOf(CustomerPropType),
     skus: PropTypes.objectOf(PropTypes.arrayOf(SkuPropType)),
     reviews: PropTypes.objectOf(PropTypes.arrayOf(ReviewPropType)),
     cart: CartPropType,
-    customers: PropTypes.arrayOf(CustomerPropType),
     shippingCost: PropTypes.number
 }

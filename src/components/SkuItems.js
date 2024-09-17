@@ -10,18 +10,18 @@ const SkuItems = (props) => {
         if (skus) {
             setSkuItems(skus.map(item => {
                 const {
-                    id,
-                    productId,
+                    product_id,
                     image,
+                    id,
                     title,
                     price,
                     stock
                 } = item;
 
                 return {
-                    id,
-                    productId,
+                    product_id,
                     image,
+                    id,
                     title,
                     price,
                     stock
@@ -49,6 +49,7 @@ const SkuItems = (props) => {
                         )
                     })
                 }
+
             </ul>
         </div>
     )

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const ProductGrid = ({product, skus}) => {
     const {
         id,
+        productName,
         name,
         reviewScore
     } = product || {};
